@@ -12,16 +12,22 @@ import java.awt.List;
 import java.awt.event.ActionListener;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Component;
+
 
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
@@ -54,9 +60,25 @@ public class Users extends JPanel {
         TableModel tbmodel = guiStuff.new tableModel();
         tableRenderer renderer = guiStuff.new tableRenderer();
 
-
-
         tableUser = new JTable(tbmodel){
+            @Override 
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int colomn){
+                Component c = super.prepareRenderer(renderer, row, colomn);
+
+
+                if (c instanceof JComponent) {
+                    JComponent jc = (JComponent) c;
+                    if (row == 0){
+                        jc.add(new N);
+                        // jc.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+                    }else{
+                        jc.add(new N);
+                    } 
+                }
+                return c;
+            }
+
+
             public TableCellRenderer getCellRenderer(int row, int col){
                 for(int a = 0; a <= 2; a++){
                     for(int b = 0; b <= tableUser.getRowCount(); b++){
@@ -70,13 +92,15 @@ public class Users extends JPanel {
 
             
         };
-        
-        
+        tableUser.setBackground(new Color(0, 0, 0, 0));
         tableUser.setEnabled(true);
         tableUser.getColumnModel().getColumn(5).setMinWidth(122);
+        tableUser.setShowHorizontalLines(false);
+        JTableHeader tbheader = tableUser.getTableHeader();
+        tbheader.setReorderingAllowed(false);
+        tableUser.setShowVerticalLines(false);
         // tableUser.setSiz
-        JTable.DropLocation dropLocation = tableUser.getDropLocation();
-        System.out.print(dropLocation);
+
            
 
 
@@ -92,12 +116,12 @@ public class Users extends JPanel {
         tableUser.setShowHorizontalLines(false);
         tableUser.setShowVerticalLines(false);
         
-        tableUser.setBackground(Color.YELLOW);
-        
         tableUser.getTableHeader().setBackground(Color.CYAN);
+        tableUser.setForeground(new Color(243, 244, 244));
         JScrollPane scrollPane = new JScrollPane(tableUser);
-
-        
+        scrollPane.getViewport().setBackground(new Color(0, 0, 0, 0));
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
         add(scrollPane, new GridBagConstraints());
     }
 }
