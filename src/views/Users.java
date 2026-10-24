@@ -1,6 +1,7 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -8,7 +9,9 @@ import java.awt.GradientPaint;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.List;
+import java.awt.ScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -19,6 +22,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
+
+import views.GUI.tableModel;
+import views.GUI.ActionButtonRenderer;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JComponent;
@@ -32,9 +39,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.table.AbstractTableModel;
 
-import views.GUI.ActionButtonRenderer;
-import views.GUI.tableModel;
-import views.GUI.VerticalLinesRenderer;
 
 public class Users extends JPanel {
     private JTable tableUser;
@@ -60,15 +64,35 @@ public class Users extends JPanel {
        
         TableModel tbmodel = new tableModel();
         ActionButtonRenderer buttonRenderer = new ActionButtonRenderer();
-        VerticalLinesRenderer VLinesRenderer = new VerticalLinesRenderer();
         
-        tableUser = new JTable(tbmodel);
-        // for(int col = 0; col < tableUser.getColumnCount(); col++){
-        //     tableUser.getColumnModel().getColumn(col).setCellRenderer(VLinesRenderer);
-        // }
-        tableUser.getColumnModel().getColumn(5).setCellRenderer(buttonRenderer);
+        tableUser = new JTable(tbmodel) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
 
-        tableUser.setDefaultRenderer(Object.class, VLinesRenderer);
+                Insets insets = getInsets();
+                
+                int rightInset = insets.right;
+
+
+                int lineHeight = (int) (getHeight() * 0.5);
+                int y = (getHeight() - lineHeight) / 2;
+
+                Graphics2D g2d = (Graphics2D) g.create();
+                try {
+                    g2d.setColor(Color.BLUE);
+                    g2d.setStroke(new BasicStroke(2));
+                    for (int column = 1; column < getColumnCount(); column++) {
+                        int x = getCellRect(0, column, true).x;
+                        g2d.drawLine(x, y, x, y + lineHeight);
+                    }
+                } finally {
+                    g2d.dispose();
+                }   
+            }
+
+        };
+        tableUser.getColumnModel().getColumn(5).setCellRenderer(buttonRenderer);
         //     public TableCellRenderer getCellRenderer(int row, int col){
         //         for(int a = 0; a <= 2; a++){
         //             for(int b = 0; b <= tableUser.getRowCount(); b++){
@@ -82,14 +106,13 @@ public class Users extends JPanel {
 
             
         // };
+        tableUser.setBorder(BorderFactory.createLineBorder(Color.GREEN));
 
         tableUser.setBackground(new Color(0, 0, 0, 0));
         tableUser.setEnabled(true);
         tableUser.getColumnModel().getColumn(5).setMinWidth(122);
-        tableUser.setShowHorizontalLines(false);
         JTableHeader tbheader = tableUser.getTableHeader();
         tbheader.setReorderingAllowed(false);
-        tableUser.setShowVerticalLines(false);
         // tableUser.setSiz
 
            
@@ -101,8 +124,7 @@ public class Users extends JPanel {
 
         tableUser.setCellSelectionEnabled(false);
         tableUser.setFillsViewportHeight(true);
-        tableUser.setIntercellSpacing(new Dimension(5, 0));
-
+        tableUser.setIntercellSpacing(new Dimension(0, 0));
 
         tableUser.setShowHorizontalLines(false);
         tableUser.setShowVerticalLines(false);
@@ -110,9 +132,9 @@ public class Users extends JPanel {
         tableUser.setForeground(new Color(243, 244, 244));
         JScrollPane scrollPane = new JScrollPane(tableUser);
         scrollPane.getViewport().setBackground(new Color(0, 0, 0, 0));
+        scrollPane.setViewportBorder(BorderFactory.createLineBorder(Color.BLACK));
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         add(scrollPane, new GridBagConstraints());
     }
 }
-

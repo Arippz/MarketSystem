@@ -247,7 +247,7 @@ public class GUI {
 
     }
 
-    static class ActionButton extends JButton {
+    public static class ActionButton extends JButton {
 
         private final int buttonId;
 
@@ -263,7 +263,7 @@ public class GUI {
 
     }
 
-    static class ActionButtonRenderer extends JPanel implements TableCellRenderer {
+    public static class ActionButtonRenderer extends JPanel implements TableCellRenderer {
         ActionButton editButton = new ActionButton("EDIT", 1);
         JLabel teslabel = new JLabel("tes");
         ActionButton deleteButton = new ActionButton("MORE", 2);
@@ -277,63 +277,8 @@ public class GUI {
 
     }
 
-    static class VerticalLinesBorder extends AbstractBorder{
-        private final Color lineColor;
-        private final int thickness;
-        private final int verticalSize;
-        private final int horizontalSize;
-        public VerticalLinesBorder(Color lineColor, int thickness, int verticalSize, int horizontalSize){
-            this.lineColor = lineColor;
-            this.thickness = thickness;
-            this.verticalSize = verticalSize;
-            this.horizontalSize = horizontalSize;
-        }
-        @Override
-        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height){
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            g2d.setColor(lineColor);
-            g2d.setStroke(new BasicStroke(thickness));
-
-            int y1 = y + verticalSize;
-            int y2 = y + height - verticalSize;
-
-            g2d.drawLine(x, y1, x, y2);
-
-        
-        }
-        @Override 
-        public Insets getBorderInsets(Component c){
-            return new Insets(0, thickness + 8, 0, 0);
-        }
-    }
-
-
-    static class VerticalLinesRenderer extends DefaultTableCellRenderer{
-        private final VerticalLinesBorder customBorder = new VerticalLinesBorder(Color.BLUE, 2, 8, 1);
-        public VerticalLinesRenderer (){
-            setOpaque(true);
-        }
-
-        @Override 
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            setBorder(customBorder);
-            setHorizontalAlignment(SwingConstants.LEFT);
-            // if(isSelected){
-            //     setBackground(table.getSelectionBackground());
-            //     setForeground(table.getSelectionForeground());
-            // }else {
-            //     setBackground(table.getBackground());
-            //     setForeground(table.getForeground());
-            // }
-            
-            return this;
-        }
-    }
-
-    static class tableModel extends AbstractTableModel {
+    public static class tableModel extends AbstractTableModel {
 
         Boolean isChecked = true;
         String[] columnNames = { "ID", "NAME", "EMAIL", "PASSWORD", "ROLES", "ACTION" };

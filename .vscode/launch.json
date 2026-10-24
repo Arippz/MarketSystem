@@ -9,6 +9,13 @@
       "name": "App",
       "request": "launch",
       "mainClass": "App",
+      "projectName": "MarketSystem_a24b71ae"
+    },
+    {
+      "type": "java",
+      "name": "App",
+      "request": "launch",
+      "mainClass": "App",
       "projectName": "MarketSystem_6a1efd8b"
     },
     {
