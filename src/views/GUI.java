@@ -7,15 +7,19 @@ import java.util.Map;
 
 import javax.accessibility.Accessible;
 import javax.swing.*;
+import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 import models.User;
+import views.GUI.ActionButton;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -23,9 +27,11 @@ import java.awt.GridBagLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -241,53 +247,102 @@ public class GUI {
 
     }
 
-    class tableRenderer extends JPanel implements TableCellRenderer {
+    static class ActionButton extends JButton {
+
+        private final int buttonId;
+
+        public ActionButton(String text, int id) {
+            super(text);
+            new JButton(text);
+            this.buttonId = id;
+        }
+
+        public int getId() {
+            return buttonId;
+        }
+
+    }
+
+    static class ActionButtonRenderer extends JPanel implements TableCellRenderer {
         ActionButton editButton = new ActionButton("EDIT", 1);
         JLabel teslabel = new JLabel("tes");
         ActionButton deleteButton = new ActionButton("MORE", 2);
-
-
-
-        
-
-
-
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            
             table.getDefaultRenderer(JComponent.class).getClass();
-
-
-            
-            
-            for (int a = 0; a <= 2; a++) {
-                this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-                this.add(editButton);   
-                this.add(deleteButton);
-            }
-            // }else if(table != null){
-            //     this.setBorder(new EmptyBorder(10, 0, 0, 0));
-
-            // }else if (hasFocus) {
-            //     System.out.println("tes");
+            this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+            this.add(editButton);   
+            this.add(deleteButton);
             return this;
         }
+
+    }
+
+    static class VerticalLinesBorder extends AbstractBorder{
+        private final Color lineColor;
+        private final int thickness;
+        private final int verticalSize;
+        private final int horizontalSize;
+        public VerticalLinesBorder(Color lineColor, int thickness, int verticalSize, int horizontalSize){
+            this.lineColor = lineColor;
+            this.thickness = thickness;
+            this.verticalSize = verticalSize;
+            this.horizontalSize = horizontalSize;
+        }
         @Override
-        protected void paintComponent(Graphics g){
-            super.paintComponent(g);
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height){
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            g.setColor(Color.BLUE);
-            g.drawLine(1, 0, 1, getHeight());
+            g2d.setColor(lineColor);
+            g2d.setStroke(new BasicStroke(thickness));
 
+            int y1 = y + verticalSize;
+            int y2 = y + height - verticalSize;
+
+            g2d.drawLine(x, y1, x, y2);
+
+        
+        }
+        @Override 
+        public Insets getBorderInsets(Component c){
+            return new Insets(0, thickness + 8, 0, 0);
         }
     }
 
-    class tableModel extends AbstractTableModel {
+
+    static class VerticalLinesRenderer extends DefaultTableCellRenderer{
+        private final VerticalLinesBorder customBorder = new VerticalLinesBorder(Color.BLUE, 2, 8, 1);
+        public VerticalLinesRenderer (){
+            setOpaque(true);
+        }
+
+        @Override 
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            setBorder(customBorder);
+            setHorizontalAlignment(SwingConstants.LEFT);
+            // if(isSelected){
+            //     setBackground(table.getSelectionBackground());
+            //     setForeground(table.getSelectionForeground());
+            // }else {
+            //     setBackground(table.getBackground());
+            //     setForeground(table.getForeground());
+            // }
+            
+            return this;
+        }
+    }
+
+    static class tableModel extends AbstractTableModel {
 
         Boolean isChecked = true;
         String[] columnNames = { "ID", "NAME", "EMAIL", "PASSWORD", "ROLES", "ACTION" };
 
         Object[][] data = { { "1", "arifin", "arifin@gmail.com", "12345", "admin", "a" },
-                { "2", "agus", "agus@gmail.com", "12345", "user", "a" } };
+                            { "2", "agus", "agus@gmail.com", "12345", "user", "a" },
+                            { "2", "agus", "agus@gmail.com", "12345", "user", "a" },
+                            { "2", "agus", "agus@gmail.com", "12345", "user", "a" }, 
+                            { "2", "agus", "agus@gmail.com", "12345", "user", "a" }};
 
         public int getColumnCount() {
             return columnNames.length;
@@ -315,20 +370,6 @@ public class GUI {
 
     }
 
-    class ActionButton extends JButton {
 
-        private final int buttonId;
-
-        public ActionButton(String text, int id) {
-            super(text);
-            new JButton(text);
-            this.buttonId = id;
-        }
-
-        public int getId() {
-            return buttonId;
-        }
-
-    }
 
 }
