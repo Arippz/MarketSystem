@@ -71,11 +71,6 @@ public class Users extends JPanel {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
 
-                Insets insets = getInsets();
-                
-                int rightInset = insets.right;
-
-
                 int lineHeight = (int) (getHeight() * 0.5);
                 int y = (getHeight() - lineHeight) / 2;
 
@@ -107,7 +102,6 @@ public class Users extends JPanel {
 
             
         // };
-        tableUser.setBorder(BorderFactory.createLineBorder(Color.GREEN));
 
         tableUser.setBackground(new Color(0, 0, 0, 0));
         tableUser.setEnabled(true);
@@ -132,7 +126,10 @@ public class Users extends JPanel {
         tableUser.setForeground(new Color(243, 244, 244));
         JScrollPane scrollPane = new JScrollPane(tableUser);
         scrollPane.getViewport().setBackground(new Color(0, 0, 0, 0));
-        scrollPane.setViewportBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        // Border thing
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         add(scrollPane, new GridBagConstraints());
