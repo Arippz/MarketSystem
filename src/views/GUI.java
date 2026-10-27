@@ -7,13 +7,19 @@ import java.util.Map;
 
 import javax.accessibility.Accessible;
 import javax.swing.*;
+import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 import models.User;
+import views.GUI.ActionButton;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -21,9 +27,11 @@ import java.awt.GridBagLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -42,17 +50,11 @@ public class GUI {
     private ArrayList<ImageIcon> headerIcon;
     private static final Map<java.net.URL, ImageIcon> cache = new HashMap<>();
     private Dimension buttonSizeHeader;
+
     public void gui() {
 
-        
-
-        
         mainFrame = new JFrame("MyAPP");
         backingPane = new JPanel(new GridBagLayout());
-
-
-
-
 
         mainFrame.setSize(600, 600);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,15 +75,10 @@ public class GUI {
         pageContainer.add(usersPanel, "USERS");
         pageContainer.add(settingsPanel, "SETTINGS");
 
-
-
         loadHeader();
 
-        
         backingPane.setOpaque(false);
 
-
-        
         mainFrame.setContentPane(mainContainer);
         mainFrame.getContentPane().add(headerContainer, BorderLayout.NORTH);
         mainFrame.getContentPane().add(pageContainer);
@@ -170,7 +167,6 @@ public class GUI {
             menuLayout = new JPanel();
             headerButtons[0].setVisible(false);
 
-
             GridBagConstraints gbc = new GridBagConstraints();
 
             gbc.gridx = 0;
@@ -190,26 +186,25 @@ public class GUI {
             menuLayout.setLayout(new GridBagLayout());
             menuLayout.setBorder(BorderFactory.createTitledBorder("lah"));
 
-            
             createMenuButtons(gbc);
-            if (menuLayout.getComponentCount() != 0){
+            if (menuLayout.getComponentCount() != 0) {
                 Component[] buttons = menuLayout.getComponents();
-                for(Component c : buttons){
-                    if (c instanceof JButton){
+                for (Component c : buttons) {
+                    if (c instanceof JButton) {
                         JButton button = (JButton) c;
                         button.addActionListener(e -> menuActionPerformed(e));
                     }
                 }
                 mainFrame.getGlassPane().setVisible(true);
             }
-        }else{
+        } else {
             mainFrame.getGlassPane().setVisible(true);
         }
     }
 
     public void createMenuButtons(GridBagConstraints gbc) {
         ArrayList<JButton> menuButtons = new ArrayList<>();
-        if(menuButtons.isEmpty()){
+        if (menuButtons.isEmpty()) {
             String[] buttonName = { "X", "DASHBOARD", "PRODUCTS", "USERS", "SETTINGS" };
             Integer i = 1;
             for (String getString : buttonName) {
@@ -235,8 +230,9 @@ public class GUI {
                     menuButtons.add(menuButton);
                     menuLayout.add(menuButton, gbc);
                 }
-                i++;  
-            };
+                i++;
+            }
+            ;
         }
     }
 
@@ -252,80 +248,75 @@ public class GUI {
         return scaledIcon;
 
     }
-    
 
+    public static class ActionButton extends JButton {
 
-    class tableRenderer extends JPanel implements TableCellRenderer{
-        ActionButton editButton = new ActionButton("EDIT", 1);
-        ActionButton deleteButton = new ActionButton("MORE", 2);
-        @Override
-        public void setOpaque(boolean isOpaque) {
-            super.setOpaque(isOpaque);
+        private final int buttonId;
+
+        public ActionButton(String text, int id) {
+            super(text);
+            new JButton(text);
+            this.buttonId = id;
         }
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
-            this.add(editButton);
-            this.add(deleteButton);
-            this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-            if(hasFocus){
-                System.out.println("tes");
-                
 
-            }
-            return this;
+        public int getId() {
+            return buttonId;
         }
+
     }
 
-    class tableModel extends AbstractTableModel{
+    public static class ActionButtonRenderer extends JPanel implements TableCellRenderer {
+        ActionButton editButton = new ActionButton("EDIT", 1);
+        JLabel teslabel = new JLabel("tes");
+        ActionButton deleteButton = new ActionButton("MORE", 2);
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            table.getDefaultRenderer(JComponent.class).getClass();
+            this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+            this.add(editButton);   
+            this.add(deleteButton);
+            return this;
+        }
+
+    }
+
+
+    public static class tableModel extends AbstractTableModel {
 
         Boolean isChecked = true;
-        String[] columnNames = {"ID", "NAME", "EMAIL", "PASSWORD", "ROLES", "ACTION" };
-        
-        Object[][] data = {{"1", "arifin", "arifin@gmail.com", "12345", "admin", "a"}, {"2", "agus", "agus@gmail.com", "12345", "user", "a"}};
-        public int getColumnCount(){
+        String[] columnNames = { "ID", "NAME", "EMAIL", "PASSWORD", "ROLES", "ACTION" };
+
+        Object[][] data = { { "1", "arifin", "arifin@gmail.com", "12345", "admin", "a" },
+                            { "2", "agus", "agus@gmail.com", "12345", "user", "a" },
+                            { "2", "agus", "agus@gmail.com", "12345", "user", "a" },
+                            { "2", "agus", "agus@gmail.com", "12345", "user", "a" }, 
+                            { "2", "agus", "agus@gmail.com", "12345", "user", "a" }};
+
+        public int getColumnCount() {
             return columnNames.length;
         }
 
-        public int getRowCount(){
+        public int getRowCount() {
             return data.length;
         }
 
-
-        public String getColumnName(int columnIndex){
+        public String getColumnName(int columnIndex) {
             return columnNames[columnIndex];
         }
 
-        public Object getValueAt(int rowIndex, int columnIndex){
+        public Object getValueAt(int rowIndex, int columnIndex) {
             return data[rowIndex][columnIndex];
         }
 
-        public Class<?> getColumnClass(int columnIndex){
+        public Class<?> getColumnClass(int columnIndex) {
             return getValueAt(0, columnIndex).getClass();
         }
-       
-        public boolean isCellEditable(int rowIndex, int columnIndex){
+
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
             return false;
         }
 
-
-    }
-    
-    class ActionButton extends JButton{
-
-    private final int buttonId;
-
-    public ActionButton(String text, int id){
-        super(text);
-        new JButton(text);
-        this.buttonId = id;
-    } 
-
-    public int getId(){
-        return buttonId;
-    }
-
     }
 
 
 
-   
 }

@@ -18,7 +18,7 @@ public class App {
     private static GUI startAPP;
     public static void main(String[] args) throws Exception {
         System.out.println("Hello, World!");
-        
+
         // DatabaseSeeder.seed();
         
         // DBConnection db = new DBConnection();
