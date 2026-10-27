@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.List;
+import java.awt.Rectangle;
 import java.awt.ScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.Graphics;
@@ -66,6 +67,11 @@ public class Users extends JPanel {
         TableModel tbmodel = new tableModel();
         ActionButtonRenderer buttonRenderer = new ActionButtonRenderer();
         
+        
+
+
+
+
         tableUser = new JTable(tbmodel) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -84,8 +90,25 @@ public class Users extends JPanel {
                     }
                 } finally {
                     g2d.dispose();
-                }   
+                }
+
+                try {
+                    g2d.setColor(Color.BLUE);
+                    g2d.setStroke(new BasicStroke(2));
+                    JTableHeader tbheader = this.getTableHeader();
+                    for (int column = 1; column < tbheader.getColumnModel().getColumnCount(); column++) {
+                        int width = tbheader.getColumnModel().getColumn(column).getWidth();
+                        int height = tbheader.getHeight();
+                        int x = tbheader.getHeaderRect(column).x;
+                        g2d.drawRoundRect(x, y, width, height, 24, 24);
+                    }
+
+                    
+                } finally {
+                    g2d.dispose();
+                }
             }
+
 
         };
         tableUser.getColumnModel().getColumn(5).setCellRenderer(buttonRenderer);
@@ -103,14 +126,22 @@ public class Users extends JPanel {
             
         // };
 
+
         tableUser.setBackground(new Color(0, 0, 0, 0));
         tableUser.setEnabled(true);
         tableUser.getColumnModel().getColumn(5).setMinWidth(122);
         JTableHeader tbheader = tableUser.getTableHeader();
+
         tbheader.setReorderingAllowed(false);
         // tableUser.setSiz
+        // tbheader.setBorder(BorderFactory.createEmptyBorder());
+        // tbheader.setBorder(BorderFactory.createEmptyBorder());
 
-           
+        
+        tbheader.setResizingAllowed(false);
+        tbheader.setBackground(new Color(0, 0, 0, 0));
+        tbheader.setForeground(new Color(243, 244, 244));
+        
 
         tableUser.setFocusable(false);
         
@@ -122,16 +153,24 @@ public class Users extends JPanel {
 
         tableUser.setShowHorizontalLines(false);
         tableUser.setShowVerticalLines(false);
-        tableUser.getTableHeader().setBackground(Color.CYAN);
+
+        
+
+
+
+
+
+
         tableUser.setForeground(new Color(243, 244, 244));
+
         JScrollPane scrollPane = new JScrollPane(tableUser);
-        scrollPane.getViewport().setBackground(new Color(0, 0, 0, 0));
+        scrollPane.setOpaque(false);
+
+
 
         // Border thing
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
         add(scrollPane, new GridBagConstraints());
 
 

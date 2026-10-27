@@ -269,11 +269,16 @@ public class GUI {
         ActionButton editButton = new ActionButton("EDIT", 1);
         JLabel teslabel = new JLabel("tes");
         ActionButton deleteButton = new ActionButton("MORE", 2);
+        @Override 
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             table.getDefaultRenderer(JComponent.class).getClass();
-            this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-            this.add(editButton);   
-            this.add(deleteButton);
+            System.out.println(table.getTableHeader().getBorder());
+            
+            if(column == 5){
+                this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+                this.add(editButton);
+                this.add(deleteButton);
+            }
             return this;
         }
 

@@ -9,18 +9,7 @@
       "name": "App",
       "request": "launch",
       "mainClass": "App",
-<<<<<<< HEAD
       "projectName": "MarketSystem_29d67deb"
-=======
-      "projectName": "MarketSystem_a24b71ae"
-    },
-    {
-      "type": "java",
-      "name": "App",
-      "request": "launch",
-      "mainClass": "App",
-      "projectName": "MarketSystem_6a1efd8b"
->>>>>>> 68ace68a51410d3151bb751a3e72260d1bb47caa
     },
     {
       "type": "java",
