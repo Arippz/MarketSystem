@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -25,6 +26,8 @@ import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
+import java.awt.Component;
+import javax.swing.JComponent;
 
 import views.GUI.tableModel;
 import views.GUI.tableRenderer;
@@ -54,9 +57,17 @@ public class Users extends JPanel {
         TableModel tbmodel = guiStuff.new tableModel();
         tableRenderer renderer = guiStuff.new tableRenderer();
 
-
-
         tableUser = new JTable(tbmodel){
+            @Override 
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int col){
+                Component c = super.prepareRenderer(renderer, row, col);
+                if(c instanceof JComponent){
+                    ((JComponent) c).setOpaque(false);
+                }
+                return c;
+            }
+
+
             public TableCellRenderer getCellRenderer(int row, int col){
                 for(int a = 0; a <= 2; a++){
                     for(int b = 0; b <= tableUser.getRowCount(); b++){
@@ -74,7 +85,8 @@ public class Users extends JPanel {
         
         tableUser.setEnabled(true);
         tableUser.getColumnModel().getColumn(5).setMinWidth(122);
-        // tableUser.setSiz
+        tableUser.setCellSelectionEnabled(false);
+        tableUser.setForeground(Color.WHITE);
         JTable.DropLocation dropLocation = tableUser.getDropLocation();
         System.out.print(dropLocation);
            
@@ -84,21 +96,24 @@ public class Users extends JPanel {
 
         // JLabel tesLabel = new JLabel("testing");
 
-        tableUser.setCellSelectionEnabled(false);
         tableUser.setFillsViewportHeight(true);
 
 
 
         tableUser.setShowHorizontalLines(false);
-        tableUser.setShowVerticalLines(false);
-        
-        tableUser.setBackground(Color.YELLOW);
-        
+        tableUser.setShowVerticalLines(true);
         tableUser.getTableHeader().setBackground(Color.CYAN);
+        tableUser.setOpaque(false);
+
+
         JScrollPane scrollPane = new JScrollPane(tableUser);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
 
         
         add(scrollPane, new GridBagConstraints());
+
+
     }
 }
 

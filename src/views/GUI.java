@@ -27,6 +27,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 public class GUI {
 
     private JFrame mainFrame;
@@ -147,6 +148,7 @@ public class GUI {
         headerContainer.add(leftContent, BorderLayout.WEST);
     }
 
+
     protected void loadHeaderButtons() {
         buttonSizeHeader = new Dimension(28, 28);
         JButton BMenus = new JButton(headerIcon.get(0));
@@ -256,6 +258,10 @@ public class GUI {
     class tableRenderer extends JPanel implements TableCellRenderer{
         ActionButton editButton = new ActionButton("EDIT", 1);
         ActionButton deleteButton = new ActionButton("MORE", 2);
+        @Override
+        public void setOpaque(boolean isOpaque) {
+            super.setOpaque(isOpaque);
+        }
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
             this.add(editButton);
             this.add(deleteButton);
