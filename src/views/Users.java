@@ -1,45 +1,34 @@
 package views;
 
-import java.awt.BorderLayout;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
+
 import java.awt.GradientPaint;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.List;
-import java.awt.Rectangle;
-import java.awt.ScrollPane;
+
 import java.awt.event.ActionListener;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Component;
+
 
 
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
+
 import javax.swing.table.TableModel;
 
 import views.GUI.tableModel;
 import views.GUI.ActionButtonRenderer;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.table.AbstractTableModel;
+
 
 
 public class Users extends JPanel {
@@ -91,62 +80,49 @@ public class Users extends JPanel {
                 } finally {
                     g2d.dispose();
                 }
-
-                try {
-                    g2d.setColor(Color.BLUE);
-                    g2d.setStroke(new BasicStroke(2));
-                    JTableHeader tbheader = this.getTableHeader();
-                    for (int column = 1; column < tbheader.getColumnModel().getColumnCount(); column++) {
-                        int width = tbheader.getColumnModel().getColumn(column).getWidth();
-                        int height = tbheader.getHeight();
-                        int x = tbheader.getHeaderRect(column).x;
-                        g2d.drawRoundRect(x, y, width, height, 24, 24);
-                    }
-
-                    
-                } finally {
-                    g2d.dispose();
-                }
             }
 
 
         };
         tableUser.getColumnModel().getColumn(5).setCellRenderer(buttonRenderer);
-        //     public TableCellRenderer getCellRenderer(int row, int col){
-        //         for(int a = 0; a <= 2; a++){
-        //             for(int b = 0; b <= tableUser.getRowCount(); b++){
-        //                 if ((row == b) && (col == 5)){
-        //                     return renderer;
-        //                 }
-        //             }
-        //         }
-        //         return super.getCellRenderer(row, col);
-        //     }
-
-            
-        // };
-
 
         tableUser.setBackground(new Color(0, 0, 0, 0));
         tableUser.setEnabled(true);
         tableUser.getColumnModel().getColumn(5).setMinWidth(122);
+
+
+        // Table Header thing
         JTableHeader tbheader = tableUser.getTableHeader();
+        final DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer(){
+            @Override 
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                int lineHeight = getHeight();
+                int width = getWidth();
+                int x = getLocation().x;
 
+                // int y = (int) (getLocation().y / 0.5);
+                int y1 = getLocation().y + lineHeight;
+                int y2 = getLocation().y + y1;
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setColor(Color.blue);
+                System.out.println(y1);
+                System.out.println(y2);
+                g2d.drawLine(x, y1, width, 16);
+            }
+        };
+        headerRenderer.setBorder(null);
+
+        tbheader.setDefaultRenderer(headerRenderer);
         tbheader.setReorderingAllowed(false);
-        // tableUser.setSiz
-        // tbheader.setBorder(BorderFactory.createEmptyBorder());
-        // tbheader.setBorder(BorderFactory.createEmptyBorder());
-
-        
         tbheader.setResizingAllowed(false);
-        tbheader.setBackground(new Color(0, 0, 0, 0));
         tbheader.setForeground(new Color(243, 244, 244));
-        
+        tbheader.setBackground(new Color(0, 0, 0, 0));
+
 
         tableUser.setFocusable(false);
         
 
-        // JLabel tesLabel = new JLabel("testing");
 
         tableUser.setFillsViewportHeight(true);
         tableUser.setIntercellSpacing(new Dimension(0, 0));

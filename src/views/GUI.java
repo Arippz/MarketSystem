@@ -272,8 +272,6 @@ public class GUI {
         @Override 
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             table.getDefaultRenderer(JComponent.class).getClass();
-            System.out.println(table.getTableHeader().getBorder());
-            
             if(column == 5){
                 this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
                 this.add(editButton);
