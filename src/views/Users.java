@@ -8,7 +8,7 @@ import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-
+import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -28,6 +28,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.GroupLayout.Alignment;
 
 
 
@@ -47,15 +49,9 @@ public class Users extends JPanel {
 
     public Users(ActionListener action) {
         
-
-
         setLayout(new GridBagLayout());
-
-
-       
         TableModel tbmodel = new tableModel();
         ActionButtonRenderer buttonRenderer = new ActionButtonRenderer();
-        
         
 
 
@@ -81,17 +77,17 @@ public class Users extends JPanel {
                     g2d.dispose();
                 }
             }
-
-
         };
-        tableUser.getColumnModel().getColumn(5).setCellRenderer(buttonRenderer);
 
+        tableUser.getColumnModel().getColumn(5).setCellRenderer(buttonRenderer);
         tableUser.setBackground(new Color(0, 0, 0, 0));
         tableUser.setEnabled(true);
         for (int a = 1; a < tableUser.getColumnModel().getColumnCount(); a++){
             TableColumn col = tableUser.getColumnModel().getColumn(a);
             if(col == tableUser.getColumnModel().getColumn(5)){
-                
+                col.setMinWidth(122);
+            }else if (col == tableUser.getColumnModel().getColumn(3)){
+                col.setMinWidth(50);
             }
         }
 
@@ -99,25 +95,30 @@ public class Users extends JPanel {
         // Table Header thing
         JTableHeader tbheader = tableUser.getTableHeader();
         final DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer(){
+            @Override
+            public void setHorizontalAlignment(int alignment) {
+                super.setHorizontalAlignment(SwingConstants.CENTER);
+            }
+
             @Override 
             protected void paintComponent(Graphics g){
                 super.paintComponent(g);
-                int lineHeight = getHeight();
-                int width = getWidth();
-                int x = getLocation().x;
-
+                
                 // int y = (int) (getLocation().y / 0.5);
-                int y1 = getLocation().y + lineHeight;
-                int y2 = getLocation().y + y1;
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setColor(Color.blue);
-                System.out.println(y1);
-                System.out.println(y2);
-                g2d.drawLine(x-100, 0, 15, 0);
+                for(int a = 1; a < tbheader.getColumnModel().getColumnCount(); a++){
+                    Rectangle headerRec = tbheader.getHeaderRect(a);
+                    int width = (int) (headerRec.getWidth() / 2);
+                    int lineHeight = (int) headerRec.getHeight() - 1;
+
+                    g2d.drawLine(10, lineHeight, width, lineHeight);
+                }
+                g2d.dispose();
             }
         };
         headerRenderer.setBorder(null);
-
+        tbheader.getColumnModel().setColumnMargin(100);
         tbheader.setDefaultRenderer(headerRenderer);
         tbheader.setReorderingAllowed(false);
         tbheader.setResizingAllowed(false);
@@ -125,10 +126,10 @@ public class Users extends JPanel {
         tbheader.setBackground(new Color(0, 0, 0, 0));
 
 
-        tableUser.setFocusable(false);
+        tableUser.setFocusable(true);
         
 
-
+        tableUser.setEnabled(true);
         tableUser.setFillsViewportHeight(true);
         tableUser.setIntercellSpacing(new Dimension(0, 0));
 

@@ -262,7 +262,7 @@ public class GUI {
         public int getId() {
             return buttonId;
         }
-
+        
     }
 
     public static class ActionButtonRenderer extends JPanel implements TableCellRenderer {
@@ -276,6 +276,12 @@ public class GUI {
                 this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
                 this.add(editButton);
                 this.add(deleteButton);
+                this.editButton.addActionListener(new ActionListener() {
+                @Override 
+                public void actionPerformed(ActionEvent e){
+                    System.out.println("tes");
+                }
+            });
             }
             return this;
         }
