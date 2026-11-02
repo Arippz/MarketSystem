@@ -17,7 +17,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
-
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import views.GUI.tableModel;
@@ -88,7 +88,12 @@ public class Users extends JPanel {
 
         tableUser.setBackground(new Color(0, 0, 0, 0));
         tableUser.setEnabled(true);
-        tableUser.getColumnModel().getColumn(5).setMinWidth(122);
+        for (int a = 1; a < tableUser.getColumnModel().getColumnCount(); a++){
+            TableColumn col = tableUser.getColumnModel().getColumn(a);
+            if(col == tableUser.getColumnModel().getColumn(5)){
+                
+            }
+        }
 
 
         // Table Header thing
@@ -108,7 +113,7 @@ public class Users extends JPanel {
                 g2d.setColor(Color.blue);
                 System.out.println(y1);
                 System.out.println(y2);
-                g2d.drawLine(x, y1, width, 16);
+                g2d.drawLine(x-100, 0, 15, 0);
             }
         };
         headerRenderer.setBorder(null);
