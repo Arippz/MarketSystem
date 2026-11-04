@@ -22,6 +22,7 @@ import javax.swing.table.TableModel;
 
 import views.GUI.tableModel;
 import views.GUI.ActionButtonRenderer;
+import views.GUI.LayoutTableRenderer;
 
 import javax.swing.BorderFactory;
 
@@ -52,7 +53,7 @@ public class Users extends JPanel {
         setLayout(new GridBagLayout());
         TableModel tbmodel = new tableModel();
         ActionButtonRenderer buttonRenderer = new ActionButtonRenderer();
-        
+        LayoutTableRenderer layoutRenderer = new LayoutTableRenderer();
 
 
 
@@ -78,17 +79,19 @@ public class Users extends JPanel {
                 }
             }
         };
-
         tableUser.getColumnModel().getColumn(5).setCellRenderer(buttonRenderer);
         tableUser.setBackground(new Color(0, 0, 0, 0));
         tableUser.setEnabled(true);
-        for (int a = 1; a < tableUser.getColumnModel().getColumnCount(); a++){
-            TableColumn col = tableUser.getColumnModel().getColumn(a);
-            if(col == tableUser.getColumnModel().getColumn(5)){
-                col.setMinWidth(122);
-            }else if (col == tableUser.getColumnModel().getColumn(3)){
-                col.setMinWidth(50);
+        for (int a = 1; a < tableUser.getColumnModel().getColumnCount(); a++){            
+            if(a == 5){
+                tableUser.getColumnModel().getColumn(a).setPreferredWidth(buttonRenderer.getWidth());
+
+                continue;
+            }else{
+                tableUser.getColumnModel().getColumn(a).setCellRenderer(layoutRenderer);
+                // tableUser.getColumnModel().getColumn(a).setPreferredWidth(122);
             }
+            tableUser.setRowHeight(50);
         }
 
 
@@ -108,9 +111,14 @@ public class Users extends JPanel {
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setColor(Color.blue);
                 for(int a = 1; a < tbheader.getColumnModel().getColumnCount(); a++){
-                    Rectangle headerRec = tbheader.getHeaderRect(a);
-                    int width = (int) (headerRec.getWidth() / 2);
-                    int lineHeight = (int) headerRec.getHeight() - 1;
+                    // System.out.println(tbheader.getSize());
+                    // Dimension rectDim = tableUser.getCellRect(0, a, true).getSize();
+                    int cellWidth = tableUser.getColumnModel().getColumn(a).getWidth();
+                    TableColumn headerCell = tbheader.getColumnModel().getColumn(a);
+                    headerCell.setMinWidth(cellWidth);
+                    // System.out.println(tbheader.getSize());
+                    int lineHeight = (int) tbheader.getHeight() - 1;
+                    int width = (int) (headerCell.getWidth());
 
                     g2d.drawLine(10, lineHeight, width, lineHeight);
                 }
@@ -128,11 +136,9 @@ public class Users extends JPanel {
 
         tableUser.setFocusable(true);
         
-
         tableUser.setEnabled(true);
         tableUser.setFillsViewportHeight(true);
         tableUser.setIntercellSpacing(new Dimension(0, 0));
-
         tableUser.setShowHorizontalLines(false);
         tableUser.setShowVerticalLines(false);
 
@@ -153,6 +159,7 @@ public class Users extends JPanel {
         // Border thing
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
+        
         add(scrollPane, new GridBagConstraints());
 
 

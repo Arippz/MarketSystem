@@ -56,7 +56,7 @@ public class GUI {
         mainFrame = new JFrame("MyAPP");
         backingPane = new JPanel(new GridBagLayout());
 
-        mainFrame.setSize(600, 600);
+        mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainContainer = new JPanel();
         mainContainer.setLayout(new BorderLayout());
@@ -267,27 +267,45 @@ public class GUI {
 
     public static class ActionButtonRenderer extends JPanel implements TableCellRenderer {
         ActionButton editButton = new ActionButton("EDIT", 1);
+        int thisWidth;
         JLabel teslabel = new JLabel("tes");
         ActionButton deleteButton = new ActionButton("MORE", 2);
         @Override 
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            table.getDefaultRenderer(JComponent.class).getClass();
+            setOpaque(false);
             if(column == 5){
                 this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
                 this.add(editButton);
                 this.add(deleteButton);
+                thisWidth = getWidth();
+
                 this.editButton.addActionListener(new ActionListener() {
                 @Override 
                 public void actionPerformed(ActionEvent e){
                     System.out.println("tes");
                 }
             });
+
+            System.out.println(thisWidth);
             }
             return this;
         }
-
     }
 
+    public static class LayoutTableRenderer extends DefaultTableCellRenderer {
+        @Override 
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            if(c instanceof JComponent){
+                ((JComponent)c).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            }
+
+            int width = table.getColumnModel().getColumn(column).getWidth();
+            
+
+            return this;
+        }
+    }
 
     public static class tableModel extends AbstractTableModel {
 
