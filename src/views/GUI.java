@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import javax.tools.Tool;
 
 import models.User;
 import views.GUI.ActionButton;
@@ -31,7 +32,9 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Label;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -50,23 +53,22 @@ public class GUI {
     private ArrayList<ImageIcon> headerIcon;
     private static final Map<java.net.URL, ImageIcon> cache = new HashMap<>();
     private Dimension buttonSizeHeader;
-
+    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     public void gui() {
 
         mainFrame = new JFrame("MyAPP");
         backingPane = new JPanel(new GridBagLayout());
-
+        
         mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainContainer = new JPanel();
         mainContainer.setLayout(new BorderLayout());
         pageCardLayout = new CardLayout();
         pageContainer = new JPanel(pageCardLayout);
-
         Login loginPanel = new Login(e -> menuActionPerformed(e));
         Home homePanel = new Home(e -> menuActionPerformed(e));
         Products productsPanel = new Products(e -> menuActionPerformed(e));
-        Users usersPanel = new Users(e -> menuActionPerformed(e));
+        Users usersPanel = new Users(e -> menuActionPerformed(e), screenSize);
         Settings settingsPanel = new Settings(e -> menuActionPerformed(e));
 
         pageContainer.add(loginPanel, "LOGIN");
@@ -286,7 +288,6 @@ public class GUI {
                 }
             });
 
-            System.out.println(thisWidth);
             }
             return this;
         }
@@ -300,8 +301,12 @@ public class GUI {
                 ((JComponent)c).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             }
 
-            int width = table.getColumnModel().getColumn(column).getWidth();
+            // System.out.println(column);
+
+            int width = table.getColumnModel().getTotalColumnWidth();
             
+            
+            // table.getColumnModel().getColumn(column).setMinWidth(10);
 
             return this;
         }

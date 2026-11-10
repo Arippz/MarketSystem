@@ -1,5 +1,6 @@
 package views;
 
+import java.awt.Color;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -10,6 +11,7 @@ import javax.swing.JTextField;
 
 public class Login extends JPanel {
     public Login(ActionListener action){
+        setBackground(Color.CYAN);
         setSize(500, 500);
         JLabel LTitle = new JLabel();
         LTitle.setText("Login");
