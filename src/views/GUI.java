@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.accessibility.Accessible;
 import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -107,6 +108,9 @@ public class GUI {
         } else if (this.menuLayout.getComponent(3).isFocusOwner()) {
             System.out.println("USERS");
             pageCardLayout.show(pageContainer, "USERS");
+            mainFrame.getGlassPane().setVisible(false);
+            headerButtons[0].setVisible(true);
+
         } else if (this.menuLayout.getComponent(4).isFocusOwner()) {
             System.out.println("SETTINGS");
             pageCardLayout.show(pageContainer, "SETTINGS");
@@ -274,22 +278,40 @@ public class GUI {
         ActionButton deleteButton = new ActionButton("MORE", 2);
         @Override 
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            setOpaque(false);
-            if(column == 5){
-                this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-                this.add(editButton);
-                this.add(deleteButton);
-                thisWidth = getWidth();
+            
 
-                this.editButton.addActionListener(new ActionListener() {
+            this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+            this.add(Box.createHorizontalGlue());
+            editButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            this.add(editButton);
+            deleteButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            this.add(deleteButton);
+
+
+            thisWidth = getWidth();
+            this.editButton.addActionListener(new ActionListener() {
                 @Override 
                 public void actionPerformed(ActionEvent e){
                     System.out.println("tes");
                 }
             });
 
-            }
+            
             return this;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            g2d.setColor(new Color(0, 0, 0, 0));
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+            g2d.dispose();
+            
+            setOpaque(false);
         }
     }
 

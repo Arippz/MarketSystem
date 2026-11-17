@@ -49,7 +49,6 @@ public class Users extends JPanel {
     }
 
     public Users(ActionListener action, Dimension screenSize) {
-        
         setLayout(new GridBagLayout());
         TableModel tbmodel = new tableModel();
         ActionButtonRenderer buttonRenderer = new ActionButtonRenderer();
@@ -79,18 +78,18 @@ public class Users extends JPanel {
                 }
             }
         };
-        tableUser.getColumnModel().getColumn(5).setCellRenderer(buttonRenderer);
         tableUser.setBackground(new Color(0, 0, 0, 0));
         tableUser.setEnabled(true);
         for (int a = 0; a < tableUser.getColumnModel().getColumnCount(); a++){            
             if(a == 5){
-                tableUser.getColumnModel().getColumn(a).setPreferredWidth(buttonRenderer.getWidth());
+                tableUser.getColumnModel().getColumn(a).setCellRenderer(buttonRenderer);
+                tableUser.getColumnModel().getColumn(a).setPreferredWidth(122);
 
-                continue;
-            }else{
-
+            }else if(a != 0){
                 tableUser.getColumnModel().getColumn(a).setCellRenderer(layoutRenderer);
                 tableUser.getColumnModel().getColumn(a).setPreferredWidth(122);
+            }else{
+                tableUser.getColumnModel().getColumn(a).setPreferredWidth(20);
             }
             tableUser.setRowHeight(50);
         }
@@ -135,11 +134,11 @@ public class Users extends JPanel {
         tbheader.setForeground(new Color(243, 244, 244));
         tbheader.setBackground(new Color(0, 0, 0, 0));
 
-        tableUser.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        // tableUser.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tableUser.setFocusable(true);
         tableUser.setOpaque(false);
         tableUser.setEnabled(true);
-        tableUser.setFillsViewportHeight(true);
+        // tableUser.setFillsViewportHeight(true);
         tableUser.setPreferredScrollableViewportSize(new Dimension((int) screenSize.getWidth() / 2, tableUser.getRowHeight() * 10));
         tableUser.setIntercellSpacing(new Dimension(0, 0));
         tableUser.setShowHorizontalLines(false);
@@ -156,14 +155,17 @@ public class Users extends JPanel {
         tableUser.setForeground(new Color(243, 244, 244));
 
         JScrollPane scrollPane = new JScrollPane(tableUser);
-        scrollPane.setOpaque(true);
-        // scrollPane.setPreferredSize(new Dimension((int) screenSize.getWidth() / 2, );
+        scrollPane.setOpaque(false);
+        // scrollPane.setPreferredSize(new Dimension((int) screenSize.getWidth() / 2, (int) tableUser.getRowHeight() * 10));
 
         // Border thing
+        scrollPane.setBackground(new Color(0, 0, 0, 0));
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setOpaque(false);
         scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
+        
         add(scrollPane, gbc);
 
 
